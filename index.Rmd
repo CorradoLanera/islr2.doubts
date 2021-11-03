@@ -1,0 +1,80 @@
+---
+title: "Dubbi ISLR"
+
+description: |
+  Presentazione di dubbi e spiegazioni su temi presentati nel libro ISLR.
+
+date: "`r Sys.Date()`"
+
+author:
+  - first_name: Corrado
+    last_name: Lanera 
+    orcid_id: 0000-0002-0520-7428
+    url: https://www.CorradoLanera.it
+    affiliation: Unità di Biostatistica, Epidemiologia e Sanità Pubblica (UniPD)
+    affiliation_url: https://www.unipd-ubep.it/
+
+bibliography: [biblio.bib]
+
+output: 
+  distill::distill_article:
+    toc: yes
+    toc_float: yes
+    self_contained: yes
+slug: 2021-islr2-doubts
+---
+
+## Introduzione
+
+Questo testo raccoglie i dubbi che mi sono stati sottoposti durante lo studio di _Introduction to Statistical Learning, Second Edition_ [@R-ISLR2], e le mie personali risposte nel tentativo di rendere chiara la risposta.
+
+Ogni possibile errore, ovviamente, è mio; così come ogni opinione o punto di vista espressi nel seguito.
+
+Chiunque volesse contribuire con ulteriori domande (o risposte, o correzioni o aggiunte alle stesse), è benevenuto sia nell'aprire un [issue](https://github.com/CorradoLanera/islr2.doubts/issues), sia nel proporre un [pull-request](https://github.com/CorradoLanera/islr2.doubts/pulls).
+
+
+## Cap. 3 - Linear Regression
+
+### Relazioni tra variabili
+
+1. Covarianza: numero. Formula generale $E[(X - E[X])(Y - E[Y])]$; formula per coppie di variabili/covariate/feature/... raccolte su $N$ campioni: 
+$$
+\frac{1}{N}\sum_{i=1}^{N}\left(\left(x_i - \frac{\sum_{j=1}^N x_j}{N}\right)\left(y_i - \frac{\sum_{j=1}^N y_j}{N}\right)\right)
+$$
+(ovvero, la media dei prodotti accoppiati delle differenze dalle medie delle due variabili).
+<br>
+Interesse: hai due variabili vuoi avere una misura "comprensibile" di quanto il variare dell'una è collegato al variare dell'altra, cioè una misura di quanto variano assieme... co-variano! La covarianza infatti ha una unità di misura che è il prodotto delle unità di misura delle due variabili. (es: la covarianza tra una variabile di BMI e una altezza è espressa in $kg/m$!). Chiaramente qusto ti è utile per capire "quanto" covariano, ma non se covariano più o meno di altre due variabili differenti (tipo circonferza della vita e altezza, la cui covarianza è espressa in $m^2$)
+
+2. Collinearità: espressione colloquiale per esprimere che le misure di due (n) informazioni raccolte su $N$ soggetti/punti, ... se rappresentate come $N$ punti con corrispondenti n-uple coordinate in uno spazio n-dimensionale, allora tali punti si disporranno più o meno con una forma che ricorda una linea (retta... se i punti sono finiti, anche un segmento direi `r emo::ji("smile")`)... più tale riminiscenza è marcata e più dici che le due variabili sono collineari... cosa c'è di formale e rigoroso in questo? Nulla. Ma rende l'idea `r emo::ji("smile")`
+
+3. Correlazione: dipende, se lo intendi come "quanto due variabili sono correlate?" allora il discorso è lo stesso della covarianza, solo che lo rendi adimensionale per poter confrontare correlazioni tra variabili differenti. Come fai? Be dividi per l'unità di misura di ciascuna delle due variabili! E qual'è "l'unità di misura" di una variabile di cui conosci delle misurazioni ma non a priori magari che cosa sia? La deviazione standard! Quindi se prendi la covarianza e la dividi per il prodotto delle due deviazioni standard... ottieni una misura della covarianza, standardizzada e a dimensionale! Ovvero una cosa eccellente per fare confronti tra coppie arbitrarie di cose casuali che non consoci `r emo::ji("smile")` (si lo so... è comico... ma che ci vuoi fare...la vità è così...incerta `r emo::ji("smile")`). 
+
+4. $R^2$: qui ti riferisci a un modello, ovvero non a due variabili qualunque ma a una risposta e a una esplicativa (che solitamente chiami rispettivamente $y$ e $x$), che ipotizzi essere legate in natura da una certa funzione o regola $f$, e che in qualche modo vuoi approssimare con una $\tilde{f}$ in modo che $y \approx\tilde{f}(x)$. Per farlo misuri vari scarti/errori che sulla risposta (dei dati noti su cui hai fatto addestramento, chiaro... poi chimalo fit, addestramento, stima, ... statistica, matematica, geometria, machine learning, natura, astro ganga... come vuoi, ma tu hai dei dati e con un processo tipicamente di ottimizzazione a partire da una forma funzionale stabilita (tipo "funzione lineare") non necessariamente nota o banale (tipo "ResNET") arrivi a definire la tua $\tilde{f}$... o all'estremo se sei Dio o un dio o la Natura magari trovi anche $f$), e il Total Sum of Square (che sarebbe la variabilità totale dei tuoi outcome, le $y$, quanto in somma (non in media... o avresti la semplice varianza, giusto? `r emo::ji("wink")`) si discostano dalla media, e il Residual Sum of Square, ovvero quanto in somma (non in media, o avresti lo scarto quadratico medio, giusto? `r emo::ji("wink")`) si discostano da quanto hai predetto tu (o forse logicamente sarebbe meglio pensarla al contrario (quando quanto predetto si discosta dal reale...) ma per togliere il dubbio ci mettiamo il quadrato così non abbiamo problemi se mettiamo una meno l'altra o l'altra meno l'una `r emo::ji("smile")`). <br>
+Ovvero prendi il totale di quanto hai sbagliato tu (il Residual Sum of Square) e il totale di quanto ha sbagliato la natura (rispetto alla media che hai osservato tu chiaramente) (il Total Sum of Square)... sottraendo la prima dalla seconda, in teoria, si suppone che tu dovresti ottenere quanto NON hai sbagliato rispetto a quanto avresti potuto sbagliare al massimo (difficile sbagliare più della natura, che dici?!) e ottieni sto magico numero che è $R^2$ (ovviamente, R... è sempre magico `r emo::ji("laugh")` `r emo::ji("laugh")`)
+<br>
+Dunque qui in teoria non centra nulla la covarianza o la correlazione e quanto detto prima in quanto il focus è prorpio diverso, parti dal misurare una stima di co-variabilità (dimensionale o adimensionale-standardizzata) tra due variabili alla stima di un non-errore su un modello stimato... però... metti che il modello sia composto da una sola variabile esplicativa, e metti che decidi che la forma della $\tilde{f}$ sia "funzione lineare" allora se fai i conti scopri che le due cose (portando al quadrato la correlazione) raggiungono lo stesso valore, ovvero che, appunto $R^2 = r^2$, in cui, chiaramente per non diminuire mai la confusione nelle persone, con $r$ indichiamo la correlazione 
+
+
+
+### F-statistics
+
+
+### log0trasform
+
+### outliers vs high-leverage
+
+
+
+## Cap. 4 - Classification
+
+### LDA/QDA equations
+
+### LDA caso speciale QDA
+
+
+
+
+## Cap. 5 - Resampling
+
+### Istanze scorrette vs (prob pred - prob real)
+
