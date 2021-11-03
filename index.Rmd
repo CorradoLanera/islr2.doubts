@@ -37,6 +37,8 @@ Chiunque volesse contribuire con ulteriori domande (o risposte, o correzioni o a
 
 ### Relazioni tra variabili
 
+> Differenza tra covarianza, collinearità e correlazione (ed R^2, che però in regressione lineare è la stessa cosa della covarianza)
+
 1. Covarianza: numero. Formula generale $E[(X - E[X])(Y - E[Y])]$; formula per coppie di variabili/covariate/feature/... raccolte su $N$ campioni: 
 $$
 \frac{1}{N}\sum_{i=1}^{N}\left(\left(x_i - \frac{\sum_{j=1}^N x_j}{N}\right)\left(y_i - \frac{\sum_{j=1}^N y_j}{N}\right)\right)
@@ -58,10 +60,16 @@ Dunque qui in teoria non centra nulla la covarianza o la correlazione e quanto d
 
 ### F-statistics
 
+> F-statistic (eq. 3.23), da dove arriva e perché posso usarla per capire se c'è una relazione tra risposta e predittori
 
-### log0trasform
+
+### log-trasform
+
+> Che assunzioni ci sono dietro al log-transform per risolvere il problema dell'eteroschedasticità (fig. 3.11)
 
 ### outliers vs high-leverage
+
+> Differenza tra outlier (anomala risposta su asse y) e high-leverage point (anomalo valore su asse x) (eq. 3.37)
 
 
 
@@ -69,12 +77,15 @@ Dunque qui in teoria non centra nulla la covarianza o la correlazione e quanto d
 
 ### LDA/QDA equations
 
+> Le equazioni della LDA (da 4.15 in poi ), QDA e Baayes Classifier sono un po' oscure
+
 ### LDA caso speciale QDA
 
-
+> Difficoltà  aseguire il ragionamento in fondo (eq. 4.31 in poi), dove dimostra che la LDA è sia un caso speciale della QDA che del naive bayes.
 
 
 ## Cap. 5 - Resampling
 
 ### Istanze scorrette vs (prob pred - prob real)
 
+> Perché in 5.1.5 usa il numero di istanze classificate non correttamente invece che la differenza tra la probabilità predetta (ad es. 60% di appartenenza alla classe A) e quella effettiva (ad es. 100% di appartenenza alla classe B)?
